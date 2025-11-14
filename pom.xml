@@ -134,7 +134,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.utsa.advprog.roy_2207027_gpacalculator/com.utsa.advprog.roy_2207027_gpacalculator.HelloApplication
+                                com.utsa.advprog.roy_2207027_gpacalculator/com.utsa.advprog.roy_2207027_gpacalculator.Welcome
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
