@@ -10,6 +10,8 @@ module com.utsa.advprog.roy_2207027_gpacalculator {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires javafx.graphics;
+    requires java.desktop;
 
     opens com.utsa.advprog.roy_2207027_gpacalculator to javafx.fxml;
     exports com.utsa.advprog.roy_2207027_gpacalculator;

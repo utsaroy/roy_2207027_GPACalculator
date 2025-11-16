@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="603.0" prefWidth="847.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.utsa.advprog.roy_2207027_gpacalculator.ResultController">
+   <children>
+      <StackPane prefHeight="611.0" prefWidth="846.0">
+         <children>
+            <ImageView fitHeight="611.0" fitWidth="994.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@background.png" />
+               </image>
+            </ImageView>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Certificate">
+                     <font>
+                        <Font name="Baskerville Old Face" size="38.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="30.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label graphicTextGap="1.0" text="of Achievement">
+                     <font>
+                        <Font name="Baskerville Old Face" size="36.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <GridPane maxWidth="500.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Course Enrolled" />
+                        <Label fx:id="courseEnrolledText" GridPane.columnIndex="1" />
+                        <Label text="Weighted Points" GridPane.rowIndex="2" />
+                        <Label fx:id="weightedPointText" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Earned Credits" GridPane.rowIndex="1" />
+                        <Label fx:id="earnedCreditText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" top="5.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <TableView fx:id="courseTable" prefHeight="330.0" style="-fx-background-color: transparent;" styleClass="resultTable">
+                     <columns>
+                        <TableColumn fx:id="nameColumn" prefWidth="200.80001527071" text="Course" />
+                        <TableColumn fx:id="codeColumn" prefWidth="89.60005187988281" text="Code" />
+                        <TableColumn fx:id="creditColumn" prefWidth="87.20001220703125" text="Credit" />
+                        <TableColumn fx:id="teacherColumn" prefWidth="189.5999755859375" text="Teachers" />
+                        <TableColumn fx:id="gradeColumn" prefWidth="115.199951171875" text="Grade" />
+                        <TableColumn fx:id="weightColumn" prefWidth="92.0" text="Weighted Pts" />
+                     </columns>
+                     <placeholder>
+                        <Label text="No courses added yet" />
+                     </placeholder>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                     <VBox.margin>
+                        <Insets left="25.0" right="28.0" />
+                     </VBox.margin>
+                  </TableView>
+               </children>
+            </VBox>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Circle fill="#faf6dc" layoutX="719.0" layoutY="116.0" radius="80.0" stroke="#dcbc63" strokeMiterLimit="8.0" strokeType="INSIDE" strokeWidth="4.0" />
+                  <VBox alignment="TOP_CENTER" layoutX="639.0" layoutY="64.0" prefHeight="131.0" prefWidth="160.0">
+                     <children>
+                        <Label alignment="CENTER" prefWidth="194.0" text="Overall GPA" textAlignment="CENTER">
+                           <font>
+                              <Font name="Baskerville Old Face" size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="overallGPA" alignment="CENTER" prefHeight="51.0" prefWidth="194.0" text="3.74" textAlignment="CENTER">
+                           <font>
+                              <Font name="Algerian" size="55.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER_RIGHT" layoutX="602.0" layoutY="546.0" prefHeight="35.0" prefWidth="234.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#saveToText" prefHeight="46.0" prefWidth="94.0" styleClass="submitButton" text="Save to Text" />
+                        <Button mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="79.0" styleClass="clearButton" text="Back">
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>
