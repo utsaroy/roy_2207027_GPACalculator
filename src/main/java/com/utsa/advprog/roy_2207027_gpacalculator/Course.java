@@ -63,7 +63,7 @@ public class Course {
 
         if (totalCredits == 0.0) return "0.0";
         double d = totalWeightedPoints/totalCredits;
-        return String.valueOf(d);
+        return String.format("%.2f", d);
     }
 
     public static int totalCourses(Course[] courses) {

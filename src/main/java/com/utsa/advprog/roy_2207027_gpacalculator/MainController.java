@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 
 public class MainController {
     @FXML
@@ -45,6 +46,8 @@ public class MainController {
     @FXML
     TextField teacherTwoField;
     @FXML
+    Button submitButton;
+    @FXML
     ComboBox<String> gradeComboBox;
     double totalCredits = 0;
     double creditSum = 0;
@@ -53,6 +56,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        //this was added to show promptText after clearing the form
         gradeComboBox.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -65,14 +69,19 @@ public class MainController {
             }
         });
 
+        //disable the submit button
+        submitButton.setDisable(true);
+
         totalCreditLabel.setText("Total Credits: Not Set");
         takenCreditLabel.setText(creditSum+" / "+totalCredits);
+
+        //configure table columns with Course class
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
         creditColumn.setCellValueFactory(new PropertyValueFactory<>("credit"));
-        teachersColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().teacher1Name + " " + cell.getValue().teacher2Name));
-        gradeColumn.setCellValueFactory(new PropertyValueFactory<>("grade"));
-        courses.add(new Course("Data Structure and Algorithm", "CSE 1234", 12.0, "hello", "hello2", "A+"));
+        teachersColumn.setCellValueFactory(cell -> new SimpleStringProperty( cell.getValue().teacher1Name + ((cell.getValue().teacher2Name.isEmpty() ? "": " & " + cell.getValue().teacher2Name))));
+        gradeColumn.setCellValueFactory(new PropertyValueFactory<>("gradeLetter"));
+        //courses.add(new Course("Data Structure and Algorithm", "CSE 1234", 12.0, "hello", "hello2", "A+"));
         courseTable.setItems(courses);
     }
 
@@ -97,40 +106,31 @@ public class MainController {
         String credit = courseCreditField.getText();
 //        System.out.println("credit: " + credit);
         if(courseName.isEmpty() || courseCode.isEmpty() || teacherOne.isEmpty() || credit.isEmpty() || grade==null || grade.isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill all the fields");
-            alert.showAndWait();
+            showAlert("Error","Please fill all the fields");
             return;
         }
         double courseCredit;
         try{
             courseCredit = Double.parseDouble(credit);
+            if(courseCredit<0) throw new InvalidParameterException("Credit cannot be less than 0");
             if(totalCredits==0) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Please set total credits first");
-                alert.showAndWait();
+                showAlert("Set Credit", "Please enter the total credits first");
                 return;
+
             }
             if(totalCredits < creditSum+courseCredit){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Credit Cannot Exceed total credits");
-                alert.showAndWait();
+                showAlert("Error","Credit cannot Exceed total credits");
                 return;
             }
             creditSum += courseCredit;
             takenCreditLabel.setText(creditSum+" / "+totalCredits);
+            if(creditSum==totalCredits){
+                submitButton.setDisable(false);
+            }
             courses.add(new Course(courseName, courseCode, courseCredit, teacherOne, teacherTwo, grade));
-        } catch (Exception _){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Invalid Credit Input");
+            clearForm();
+        } catch (Exception e){
+            showAlert("Invalid Input", "Invalid Credit Input");
         }
     }
 
@@ -155,21 +155,59 @@ public class MainController {
             totalCreditField.setText("");
             totalCreditLabel.setText("Total Credits: " + totalCredits);
             takenCreditLabel.setText(creditSum+" / "+totalCredits);
+            submitButton.setDisable((totalCredits!=creditSum));
         } catch(Exception _){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please Enter Valid Credit");
-            alert.showAndWait();
+            showAlert("Invalid Input", "Please Enter Valid Credit");
         }
     }
 
     public void resetAll(ActionEvent event) {
         clearForm();
+        submitButton.setDisable(true);
         totalCredits = 0;
         creditSum = 0;
-        totalCreditLabel.setText("Total Credits: " + totalCredits);
+        totalCreditLabel.setText("Total Credits: Not Set");
         takenCreditLabel.setText(creditSum+" / "+totalCredits);
         courses.clear();
+    }
+
+    public void deleteCourse(ActionEvent event) {
+            int i = courseTable.getSelectionModel().getSelectedIndex();
+            if(i==-1) {
+                showAlert("Error","Please select a course on table");
+                return;
+            }
+            creditSum -= courses.get(i).getCredit();
+            takenCreditLabel.setText(creditSum+" / "+totalCredits);
+            courses.remove(i);
+            courseTable.getSelectionModel().clearSelection();
+    }
+
+
+    public void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    public void editCourse(ActionEvent event) {
+        int i = courseTable.getSelectionModel().getSelectedIndex();
+        if(i==-1) {
+            showAlert("Error","Please select a course on table");
+            return;
+        }
+        Course c = courses.get(i);
+        courseNameField.setText(c.getName());
+        courseCodeField.setText(c.getCode());
+        courseCreditField.setText(String.valueOf(c.getCredit()));
+        teacherOneField.setText(c.teacher1Name);
+        teacherTwoField.setText(c.teacher2Name);
+        gradeComboBox.setValue(c.gradeLetter);
+        creditSum -= c.getCredit();
+        takenCreditLabel.setText(creditSum+" / "+totalCredits);
+        courses.remove(i);
+        courseNameField.requestFocus();
+        courseTable.getSelectionModel().clearSelection();
     }
 }

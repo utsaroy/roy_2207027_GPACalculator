@@ -56,23 +56,32 @@
                     </rowConstraints>
                      <children>
                         <Label text="Course Enrolled" />
-                        <Label fx:id="courseEnrolledText" GridPane.columnIndex="1" />
-                        <Label text="Weighted Points" GridPane.rowIndex="2" />
-                        <Label fx:id="weightedPointText" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="courseEnrolledText" GridPane.columnIndex="1">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <Label text="Total Weighted Points" GridPane.rowIndex="2" />
+                        <Label fx:id="weightedPointText" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <Label text="Earned Credits" GridPane.rowIndex="1" />
-                        <Label fx:id="earnedCreditText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="earnedCreditText" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="5.0" left="30.0" top="5.0" />
+                        <Insets bottom="20.0" left="30.0" top="10.0" />
                      </VBox.margin>
                   </GridPane>
                   <TableView fx:id="courseTable" prefHeight="330.0" style="-fx-background-color: transparent;" styleClass="resultTable">
                      <columns>
                         <TableColumn fx:id="nameColumn" prefWidth="200.80001527071" text="Course" />
                         <TableColumn fx:id="codeColumn" prefWidth="89.60005187988281" text="Code" />
-                        <TableColumn fx:id="creditColumn" prefWidth="87.20001220703125" text="Credit" />
-                        <TableColumn fx:id="teacherColumn" prefWidth="189.5999755859375" text="Teachers" />
-                        <TableColumn fx:id="gradeColumn" prefWidth="115.199951171875" text="Grade" />
+                        <TableColumn fx:id="creditColumn" prefWidth="87.199951171875" text="Credit" />
+                        <TableColumn fx:id="teacherColumn" prefWidth="233.60003662109375" text="Teachers" />
+                        <TableColumn fx:id="gradeColumn" prefWidth="79.99993896484375" text="Grade" />
                         <TableColumn fx:id="weightColumn" prefWidth="92.0" text="Weighted Pts" />
                      </columns>
                      <placeholder>

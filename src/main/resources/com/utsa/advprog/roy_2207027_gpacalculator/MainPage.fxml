@@ -50,9 +50,9 @@
                   <columns>
                      <TableColumn fx:id="nameColumn" maxWidth="227.20000910758972" minWidth="-1.0" prefWidth="215.20000910758972" text="Course" />
                      <TableColumn fx:id="codeColumn" minWidth="0.0" prefWidth="60.80000305175781" text="Code" />
-                     <TableColumn fx:id="creditColumn" prefWidth="61.5999755859375" text="Credit" />
-                     <TableColumn fx:id="teachersColumn" prefWidth="264.800048828125" text="Teachers" />
-                     <TableColumn fx:id="gradeColumn" prefWidth="68.79998779296875" text="Grade Pts" />
+                     <TableColumn fx:id="creditColumn" prefWidth="50.4000244140625" text="Credit" />
+                     <TableColumn fx:id="teachersColumn" prefWidth="296.0" text="Teachers" />
+                     <TableColumn fx:id="gradeColumn" prefWidth="48.79998779296875" text="Grade" />
                   </columns>
                   <VBox.margin>
                      <Insets />
@@ -63,8 +63,8 @@
                </TableView>
                <HBox alignment="CENTER_RIGHT">
                   <children>
-                     <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="66.0" styleClass="clearButton" text="Edit" />
-                     <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="59.0" styleClass="clearButton" text="Delete">
+                     <Button mnemonicParsing="false" onAction="#editCourse" prefHeight="30.0" prefWidth="66.0" styleClass="primary-button" text="Edit" />
+                     <Button mnemonicParsing="false" onAction="#deleteCourse" prefHeight="32.0" prefWidth="59.0" styleClass="clearButton" text="Delete">
                         <HBox.margin>
                            <Insets left="20.0" right="10.0" />
                         </HBox.margin>
@@ -88,7 +88,7 @@
                   </color>
                </DropShadow>
             </effect></Button>
-         <Button mnemonicParsing="false" onAction="#calculateGPA" prefHeight="48.0" prefWidth="132.0" styleClass="submitButton" text="Calculate GPA">
+         <Button fx:id="submitButton" mnemonicParsing="false" onAction="#calculateGPA" prefHeight="48.0" prefWidth="132.0" styleClass="submitButton" text="Calculate GPA">
             <HBox.margin>
                <Insets left="20.0" />
             </HBox.margin>
@@ -236,7 +236,7 @@
                      </color>
                   </DropShadow>
                </effect></Button>
-            <Button mnemonicParsing="false" onAction="#addCourse" styleClass="primary-button" text="Add Course">
+            <Button mnemonicParsing="false" onAction="#addCourse" prefHeight="38.0" prefWidth="108.0" styleClass="primary-button" text="Add Course">
                <effect>
                   <DropShadow height="10.0" radius="4.5" width="10.0">
                      <color>
