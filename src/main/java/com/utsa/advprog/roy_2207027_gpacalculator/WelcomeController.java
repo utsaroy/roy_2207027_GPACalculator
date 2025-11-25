@@ -16,4 +16,11 @@ public class WelcomeController {
         stage.setScene(new Scene(loader.load()));
         stage.show();
     }
+
+    public void viewSavedResults(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ResultList.fxml"));
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(loader.load()));
+        stage.show();
+    }
 }

@@ -44,7 +44,7 @@
             <Insets bottom="20.0" />
          </padding>
       </Label>
-      <Button mnemonicParsing="false" onAction="#startCalculator" prefHeight="32.0" prefWidth="304.0" style="-fx-background-radius: 50; -fx-cursor: pointer;" styleClass="startButton" text="Start GPA Calculator" textFill="WHITE">
+      <Button mnemonicParsing="false" onAction="#startCalculator" prefHeight="66.0" prefWidth="259.0" style="-fx-background-radius: 50; -fx-cursor: pointer;" styleClass="startButton" text="Calculate GPA" textFill="WHITE">
          <VBox.margin>
             <Insets top="30.0" />
          </VBox.margin>
@@ -58,6 +58,24 @@
             <DropShadow>
                <color>
                   <Color red="0.07009746879339218" green="0.18719038367271423" blue="0.6105263233184814" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#viewSavedResults" prefHeight="42.0" prefWidth="199.0" styleClass="clearButton" text="Saved Results">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+         <font>
+            <Font name="Bodoni MT" size="15.0" />
+         </font>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.05950000137090683" green="0.13212500512599945" blue="0.3499999940395355" opacity="0.7302431464195251" />
                </color>
             </DropShadow>
          </effect>

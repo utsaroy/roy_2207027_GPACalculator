@@ -1,14 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="949.0" styleClass="main-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.utsa.advprog.roy_2207027_gpacalculator.ResultListController">
+   <top>
+      <VBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="30.0" right="30.0" top="20.0" />
+         </BorderPane.margin>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <Label text="Saved Results">
+                     <font>
+                        <Font name="Bauhaus 93" size="36.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.4196078431372549" green="0.30196078431372547" blue="0.9490196078431372" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.28627450980392155" green="0.34901960784313724" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="View all your previously saved GPA calculations" textFill="#767575">
+               <font>
+                  <Font name="Bookman Old Style Italic" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </top>
+   
+   <!-- Footer -->
+   <bottom>
+      
+                        <!-- Action Buttons -->
+      <HBox alignment="CENTER_RIGHT" spacing="15.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#viewResult" prefHeight="30.0" prefWidth="80.0" styleClass="primary-button" text="View">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.1080000028014183" green="0.1736000031232834" blue="0.6000000238418579" opacity="0.5630698800086975" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#editResult" prefHeight="30.0" prefWidth="80.0" styleClass="primary-button" text="Edit">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.23484332859516144" green="0.09870000183582306" blue="0.4699999988079071" opacity="0.6329787373542786" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#deleteResult" prefHeight="30.0" prefWidth="87.0" styleClass="clearButton" text="Delete">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.46293333172798157" green="0.1120000034570694" blue="0.5600000023841858" opacity="0.6360182166099548" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="80.0" styleClass="secondary-button" text="Back">
+               <font>
+                  <Font name="Berlin Sans FB Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.09239999949932098" green="0.12992000579833984" blue="0.2800000011920929" opacity="0.5265957713127136" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" right="10.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <center>
+      <VBox spacing="20.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            
+                  <!-- Results Table -->
+            <VBox spacing="15.0" styleClass="table-card">
+               <padding>
+                  <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+               </padding>
+               <effect>
+                  <DropShadow color="#cccccc" height="15.0" radius="7.0" width="15.0">
+                     <color>
+                        <Color red="0.7803921568627451" green="0.7803921568627451" blue="0.7803921568627451" opacity="0.2" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <children>
+                  
+                        <TableView fx:id="resultsTable" prefHeight="508.0" prefWidth="887.0">
+                     <columns>
+                        <TableColumn fx:id="dateColumn" prefWidth="95.99999499320984" text="Date" />
+                        <TableColumn fx:id="studentNameColumn" prefWidth="214.40003204345703" text="Student Name" />
+                        <TableColumn fx:id="rollNumberColumn" prefWidth="105.60003662109375" text="Roll Number" />
+                        <TableColumn fx:id="universityColumn" prefWidth="194.39999389648438" text="University" />
+                        <TableColumn fx:id="coursesColumn" prefWidth="103.2000732421875" text="Courses" />
+                        <TableColumn fx:id="creditsColumn" prefWidth="86.4000244140625" text="Credits" />
+                        <TableColumn fx:id="gpaColumn" prefWidth="80.7999267578125" text="GPA" />
+                     </columns>
+                     <placeholder>
+                        <VBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="No saved results found" textFill="#999999">
+                                 <font>
+                                    <Font name="Berlin Sans FB" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Start calculating your GPA to see results here" textFill="#cccccc">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </placeholder>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
