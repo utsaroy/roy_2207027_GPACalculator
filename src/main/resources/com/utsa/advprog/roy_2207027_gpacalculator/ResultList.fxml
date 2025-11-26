@@ -62,9 +62,6 @@
       <HBox alignment="CENTER_RIGHT" spacing="15.0">
          <children>
             <Button mnemonicParsing="false" onAction="#viewResult" prefHeight="30.0" prefWidth="80.0" styleClass="primary-button" text="View">
-               <font>
-                  <Font name="Berlin Sans FB Bold" size="14.0" />
-               </font>
                <effect>
                   <DropShadow>
                      <color>
@@ -74,9 +71,6 @@
                </effect>
             </Button>
             <Button mnemonicParsing="false" onAction="#editResult" prefHeight="30.0" prefWidth="80.0" styleClass="primary-button" text="Edit">
-               <font>
-                  <Font name="Berlin Sans FB Bold" size="14.0" />
-               </font>
                <effect>
                   <DropShadow>
                      <color>
@@ -86,9 +80,6 @@
                </effect>
             </Button>
             <Button mnemonicParsing="false" onAction="#deleteResult" prefHeight="30.0" prefWidth="87.0" styleClass="clearButton" text="Delete">
-               <font>
-                  <Font name="Berlin Sans FB Bold" size="14.0" />
-               </font>
                <effect>
                   <DropShadow>
                      <color>
@@ -98,9 +89,6 @@
                </effect>
             </Button>
             <Button mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="80.0" styleClass="secondary-button" text="Back">
-               <font>
-                  <Font name="Berlin Sans FB Bold" size="14.0" />
-               </font>
                <effect>
                   <DropShadow>
                      <color>

@@ -11,9 +11,12 @@ import java.io.IOException;
 
 public class WelcomeController {
     public void startCalculator(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("user-info.fxml"));
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(loader.load()));
+        Scene scene = new Scene(loader.load());
+//        UserInfoController userInfoController = loader.getController();
+//        userInfoController.setPrevScene(stage.getScene());
+        stage.setScene(scene);
         stage.show();
     }
 

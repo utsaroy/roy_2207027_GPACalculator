@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 
 public class MainController {
+    public Label coursesForId;
     @FXML
     TableView<Course>  courseTable;
     @FXML
@@ -51,6 +52,9 @@ public class MainController {
     ComboBox<String> gradeComboBox;
     double totalCredits = 0;
     double creditSum = 0;
+    Student student;
+    Scene prevScene;
+    private boolean updateMode;
 
     private final ObservableList<Course> courses = FXCollections.observableArrayList();
 
@@ -71,6 +75,7 @@ public class MainController {
 
         //disable the submit button
         submitButton.setDisable(true);
+        applySubmitButtonLabel();
 
         totalCreditLabel.setText("Total Credits: Not Set");
         takenCreditLabel.setText(creditSum+" / "+totalCredits);
@@ -83,15 +88,35 @@ public class MainController {
         gradeColumn.setCellValueFactory(new PropertyValueFactory<>("gradeLetter"));
         //courses.add(new Course("Data Structure and Algorithm", "CSE 1234", 12.0, "hello", "hello2", "A+"));
         courseTable.setItems(courses);
+
     }
 
+    public void setStudent(Student student) {
+        this.student = student;
+        //set Name
+        coursesForId.setText("Added Courses for " + student.name);
+        if (student.totalCredits > 0) {
+            totalCredits = student.totalCredits;
+            totalCreditLabel.setText("Total Credits: " + totalCredits);
+        }
+        updateTakenCreditLabel();
+    }
     public void calculateGPA(ActionEvent event) throws IOException {
+        if (student == null) {
+            showAlert("Missing Student", "Please provide student information first.");
+            return;
+        }
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ResultPage.fxml"));
         Parent root = fxmlLoader.load();
         Scene prevScene = ((Node)event.getSource()).getScene();
         ResultController resultController = fxmlLoader.getController();
         resultController.storeScene(prevScene);
-        resultController.setCourseList(courses);
+        student.totalCredits = totalCredits;
+        student.earnedCredits = creditSum;
+        student.courses = courses.toArray(new Course[0]);
+        resultController.setStudent(student);
+        resultController.setCourseList(FXCollections.observableArrayList(courses));
+        resultController.setUpdateMode(updateMode);
         Stage stage = (Stage)prevScene.getWindow();
         stage.setScene(new Scene(root));
         stage.show();
@@ -123,10 +148,7 @@ public class MainController {
                 return;
             }
             creditSum += courseCredit;
-            takenCreditLabel.setText(creditSum+" / "+totalCredits);
-            if(creditSum==totalCredits){
-                submitButton.setDisable(false);
-            }
+            updateTakenCreditLabel();
             courses.add(new Course(courseName, courseCode, courseCredit, teacherOne, teacherTwo, grade));
             clearForm();
         } catch (Exception e){
@@ -154,8 +176,7 @@ public class MainController {
             totalCredits = cc;
             totalCreditField.setText("");
             totalCreditLabel.setText("Total Credits: " + totalCredits);
-            takenCreditLabel.setText(creditSum+" / "+totalCredits);
-            submitButton.setDisable((totalCredits!=creditSum));
+            updateTakenCreditLabel();
         } catch(Exception _){
             showAlert("Invalid Input", "Please Enter Valid Credit");
         }
@@ -167,7 +188,7 @@ public class MainController {
         totalCredits = 0;
         creditSum = 0;
         totalCreditLabel.setText("Total Credits: Not Set");
-        takenCreditLabel.setText(creditSum+" / "+totalCredits);
+        updateTakenCreditLabel();
         courses.clear();
     }
 
@@ -178,7 +199,7 @@ public class MainController {
                 return;
             }
             creditSum -= courses.get(i).getCredit();
-            takenCreditLabel.setText(creditSum+" / "+totalCredits);
+                updateTakenCreditLabel();
             courses.remove(i);
             courseTable.getSelectionModel().clearSelection();
     }
@@ -205,9 +226,62 @@ public class MainController {
         teacherTwoField.setText(c.teacher2Name);
         gradeComboBox.setValue(c.gradeLetter);
         creditSum -= c.getCredit();
-        takenCreditLabel.setText(creditSum+" / "+totalCredits);
+        updateTakenCreditLabel();
         courses.remove(i);
         courseNameField.requestFocus();
         courseTable.getSelectionModel().clearSelection();
+    }
+
+    public void setPrevScene(Scene prevScene) {
+        this.prevScene = prevScene;
+    }
+
+    public void backButton(ActionEvent event) {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.setScene(prevScene);
+        stage.show();
+    }
+
+    public void setUpdateMode(boolean updateMode) {
+        this.updateMode = updateMode;
+        applySubmitButtonLabel();
+    }
+
+    public void loadCourses(Course[] existingCourses) {
+        courses.clear();
+        creditSum = 0;
+        if (!updateMode) {
+            totalCredits = 0;
+            totalCreditLabel.setText("Total Credits: Not Set");
+        }
+        if (existingCourses != null) {
+            for (Course course : existingCourses) {
+                if (course == null) continue;
+                courses.add(course);
+                creditSum += course.getCredit();
+            }
+        }
+
+        if (student != null && student.totalCredits > 0) {
+            totalCredits = student.totalCredits;
+            totalCreditLabel.setText("Total Credits: " + totalCredits);
+        } else if (creditSum > 0 && totalCredits == 0) {
+            totalCredits = creditSum;
+            totalCreditLabel.setText("Total Credits: " + totalCredits);
+        }
+
+        updateTakenCreditLabel();
+        submitButton.setDisable(totalCredits == 0 || creditSum != totalCredits);
+    }
+
+    private void updateTakenCreditLabel() {
+        takenCreditLabel.setText(creditSum + " / " + totalCredits);
+        submitButton.setDisable(totalCredits == 0 || creditSum != totalCredits);
+    }
+
+    private void applySubmitButtonLabel() {
+        if (submitButton != null) {
+            submitButton.setText(updateMode ? "Update GPA" : "Calculate GPA");
+        }
     }
 }

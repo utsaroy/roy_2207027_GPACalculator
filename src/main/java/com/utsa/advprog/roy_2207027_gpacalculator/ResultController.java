@@ -6,9 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,7 +23,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class ResultController {
+    public Label universityField;
+    public Label rollField;
+    public Label nameField;
     Scene prevScene;
+    Student student;
 
     @FXML
     TableView<Course> courseTable;
@@ -46,14 +51,18 @@ public class ResultController {
     Label weightedPointText;
     @FXML
     Label earnedCreditText;
+    @FXML
+    private Button saveButton;
 
-    private ObservableList<Course> courseList = FXCollections.observableArrayList();
+    private final ObservableList<Course> courseList = FXCollections.observableArrayList();
     private Course[] courseArray;
+    private boolean updateMode;
 
     @FXML
     public void initialize() {
         configureColumns();
         courseTable.setItems(courseList);
+        applySaveButtonLabel();
     }
 
     private void configureColumns() {
@@ -69,9 +78,27 @@ public class ResultController {
         this.courseList.setAll(courseList);
         this.courseArray = courseList.toArray(new Course[0]);
         overallGPA.setText(Course.calculateGrade(courseArray));
-        courseEnrolledText.setText(": " + String.valueOf(Course.totalCourses(courseArray)));
-        weightedPointText.setText(": "+String.valueOf(Course.totalWeightedPoints(courseArray)));
-        earnedCreditText.setText(": "+String.valueOf(Course.earnedCredits(courseArray)));
+        courseEnrolledText.setText(": " + Course.totalCourses(courseArray));
+        weightedPointText.setText(": "+ Course.totalWeightedPoints(courseArray));
+        earnedCreditText.setText(": "+ Course.earnedCredits(courseArray));
+        if (student != null) {
+            student.courses = this.courseArray.clone();
+        }
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+        universityField.setText(student.university);
+        rollField.setText(student.roll);
+        nameField.setText(student.name);
+        if (courseArray != null) {
+            student.courses = courseArray.clone();
+        }
+    }
+
+    public void setUpdateMode(boolean updateMode) {
+        this.updateMode = updateMode;
+        applySaveButtonLabel();
     }
 
     @FXML
@@ -117,9 +144,79 @@ public class ResultController {
     }
 
     public void goBack(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
+        //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(prevScene);
         stage.show();
+    }
+
+    public void saveToDatabase(ActionEvent event) {
+        if (student == null) {
+            showAlert("Missing Student", "Please enter student information before saving.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (courseArray == null || courseArray.length == 0) {
+            showAlert("No Courses", "Add at least one course before saving to the database.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        double earnedCredits = Course.earnedCredits(courseArray);
+        double gpaValue;
+        try {
+            gpaValue = Double.parseDouble(Course.calculateGrade(courseArray));
+        } catch (NumberFormatException ex) {
+            gpaValue = 0.0;
+        }
+
+        student.earnedCredits = earnedCredits;
+        student.totalCredits = earnedCredits;
+        student.gpa = gpaValue;
+        student.courses = courseArray.clone();
+
+        Course[] payload = student.courses.clone();
+        WriteData task = new WriteData(student, payload);
+
+        Node trigger = event.getSource() instanceof Node ? (Node) event.getSource() : null;
+        if (trigger != null) {
+            trigger.setDisable(true);
+        }
+
+        task.setOnSucceeded(e -> {
+            if (trigger != null) {
+                trigger.setDisable(false);
+            }
+            String message = student.getId() > 0 ? "Student record updated." : "Student data saved to the database.";
+            showAlert("Saved", message, Alert.AlertType.INFORMATION);
+        });
+
+        task.setOnFailed(e -> {
+            if (trigger != null) {
+                trigger.setDisable(false);
+            }
+            Throwable ex = task.getException();
+            String message = ex != null && ex.getMessage() != null
+                    ? ex.getMessage()
+                    : "Failed to save student data.";
+            showAlert("Save Failed", message, Alert.AlertType.ERROR);
+        });
+
+        Thread background = new Thread(task, "write-data-task");
+        background.setDaemon(true);
+        background.start();
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void applySaveButtonLabel() {
+        if (saveButton != null) {
+            saveButton.setText(updateMode ? "Update" : "Save");
+        }
     }
 }

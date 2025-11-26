@@ -12,6 +12,7 @@ module com.utsa.advprog.roy_2207027_gpacalculator {
     requires com.almasb.fxgl.all;
     requires javafx.graphics;
     requires java.desktop;
+    requires java.sql;
 
     opens com.utsa.advprog.roy_2207027_gpacalculator to javafx.fxml;
     exports com.utsa.advprog.roy_2207027_gpacalculator;

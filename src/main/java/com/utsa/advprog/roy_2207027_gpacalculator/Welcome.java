@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 public class Welcome extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        DatabaseManager.initialize();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Welcome.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
